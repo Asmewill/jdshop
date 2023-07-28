@@ -1,0 +1,73 @@
+1.Flutter中文网环境搭建教程：https://flutter.cn/docs/get-started/install/windows
+
+2.环境变量配置：https://www.jianshu.com/p/ec829849c071
+
+3.flutter doctor 报错原因分析：
+https://blog.csdn.net/tangxw1991/article/details/79773191
+
+4.安装Flutter和Dart插件：https://www.jianshu.com/p/c552fca89f19
+
+5.如果是VsCode
+【
+1.Flutter         //Flutter插件
+2.Dart            //Dart语言
+3.Code Runner     //右键的时候,会显示Run Code  可以运行void main()函数
+4.Awesome Flutter Snippets   //flutter提示
+5.中文语言汉化包
+】
+
+6.安装成功,如图：flutter_success.png
+
+7.flutter 内置图标库：http://bbs.itying.com/topic/5d22b111fb714f06a4b0188d
+
+8.flutter国内库镜像地址：https://pub.flutter-io.cn/packages?q=flutter_swiper_null_safety
+
+9.国外flutter开源项目网址：https://itsallwidgets.com/
+
+10.学习资料：https://longyi.blog.csdn.net/article/details/107045022
+
+11.如果插件不支持空安全，可以使用：flutter run --no-sound-null-safety
+
+12.
+水坚 8-27 15:12:41
+控件自适应：Row-->Expanded-->Container--->控件
+
+水坚 8-27 15:13:02
+REC自适应
+
+水坚 8-27 16:07:58
+REC自适应宽度，CEC自适应高度
+
+水坚 8-27 16:10:15
+Column->Expanded->Container ->控件
+
+水坚 8-30 13:50:40
+Row--->【Container,Expanded 】 左边固定，右边自适应  R【CE】
+
+水坚 8-30 13:52:57
+Row--->【Container,Expanded-->Container 】 左边固定，右边自适应  R【CE-->C】
+
+水坚 9-2 14:28:27
+ListView中直接放Container时必须给出高度才会显示
+
+13.Flutter混合开发 如何将Flutter项目变成Module导入Android项目(4.6)
+https://blog.csdn.net/weixin_44819566/article/details/110238546
+
+14.创建一个stateless widget 或 stateful widget
+*只需输入stless即可创建一个无状态widget
+*或输入stful 创建一个 Stateful widget
+
+15.2023-06-25
+flutter --version  3.10.5
+Dart version  3.0.5
+
+16.
+Dart语法基础  https://juejin.cn/post/7230699871249989691
+函数可选参数 https://juejin.cn/post/7105567657700622343
+
+17.Jdshop商城注册用户账号：
+18279259496    aeuio888
+
+18.json转换成Bean类 ,下载插件   Json To Dart
+
+
