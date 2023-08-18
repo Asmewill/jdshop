@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:jdshop/jdshop/util/dio_proxy.dart';
 
 class DioDemoPage extends StatefulWidget {
   const DioDemoPage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class _DioRequestDemoState extends State<DioDemoPage> {
   List list = [];
 
   void getData() async {
-    var response = await Dio().get("https://www.wanandroid.com/banner/json");
+    var response = await DioProxy().dio.get("https://www.wanandroid.com/banner/json");
     print(response.data);
     if (response.statusCode == 200) {
       setState(() {

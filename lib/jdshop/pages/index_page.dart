@@ -5,7 +5,9 @@ import 'package:jdshop/jdshop/pages/home_page.dart';
 import 'package:jdshop/jdshop/pages/mine_page.dart';
 
 class IndexPage extends StatefulWidget {
-  const IndexPage({Key? key}) : super(key: key);
+   dynamic arguments;
+
+   IndexPage({this.arguments,Key? key}) : super(key: key);
 
   @override
   State<IndexPage> createState() => _IndexPageState();
@@ -20,6 +22,7 @@ class _IndexPageState extends State<IndexPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    currentIndex=widget.arguments["tab_index"];
     pageController=PageController(initialPage: currentIndex);
   }
 

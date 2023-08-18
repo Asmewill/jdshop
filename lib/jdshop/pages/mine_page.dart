@@ -1,5 +1,11 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:jdshop/jdshop/Util/toast_util.dart';
+import 'package:jdshop/jdshop/event/event_bus.dart';
+import 'package:jdshop/jdshop/pages/order_page.dart';
+import 'package:jdshop/jdshop/util/user_util.dart';
+
+import '../../widget/statefulwidget/scaffold_bottom_navigation_bar_1.dart';
 
 class MinePage extends StatefulWidget {
   const MinePage({Key? key}) : super(key: key);
@@ -9,15 +15,42 @@ class MinePage extends StatefulWidget {
 }
 
 class _MinePageState extends State<MinePage> {
+  List userList = [];
   bool isLogin = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    eventBus.on<UserEvent>().listen((event) {
+      print("UserEvent:${event.text}");
+      getUserInfo();
+    });
+    getUserInfo();
+  }
+
+  /***
+   * 获取用户信息数据
+   */
+  getUserInfo() async {
+    List userList = await UserUtil.getUserInfo();
+    bool isLogin = await UserUtil.getUserLoginState();
+    setState(() {
+      this.userList = userList;
+      this.isLogin = isLogin;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+        body: Container(
+      color: Colors.white,
+      child: ListView(
+        padding: EdgeInsets.only(bottom: 0),//给底部一个0的padding,有一个沉浸式透明状态栏的效果
         children: [
           Container(
-            height: 134,
+            height: 150,
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("images/user_bg.jpg"),
@@ -40,7 +73,7 @@ class _MinePageState extends State<MinePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "用户名:18279259491",
+                            "用户名:${userList[0]["tel"]}",
                             style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                           Padding(
@@ -55,7 +88,7 @@ class _MinePageState extends State<MinePage> {
                     : InkWell(
                         onTap: () {
                           setState(() {
-                            isLogin = !isLogin;
+                            Navigator.pushNamed(context, "/login_page");
                           });
                         },
                         child: Text(
@@ -67,7 +100,11 @@ class _MinePageState extends State<MinePage> {
             ),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return OrderPage(arguments: {"tab_index": 0});
+              }));
+            },
             child: Container(
               height: 70,
               child: Row(
@@ -96,7 +133,11 @@ class _MinePageState extends State<MinePage> {
             color: Colors.black26,
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return OrderPage(arguments: {"tab_index": 1});
+              }));
+            },
             child: Container(
               height: 70,
               child: Row(
@@ -126,7 +167,9 @@ class _MinePageState extends State<MinePage> {
           ),
           InkWell(
             onTap: () {
-              ToastUtil.showMsg("FlutterDemo");
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ScaffoldBottomNavigationBar1();
+              }));
             },
             child: Container(
               height: 70,
@@ -156,7 +199,9 @@ class _MinePageState extends State<MinePage> {
             color: Colors.black26,
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              ToastUtil.showMsg("我的收藏");
+            },
             child: Container(
               height: 70,
               child: Row(
@@ -185,7 +230,9 @@ class _MinePageState extends State<MinePage> {
             color: Colors.black26,
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              ToastUtil.showMsg("在线客服");
+            },
             child: Container(
               height: 70,
               child: Row(
@@ -215,6 +262,6 @@ class _MinePageState extends State<MinePage> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

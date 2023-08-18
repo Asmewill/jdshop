@@ -36,7 +36,7 @@ class SearchHistoryUtil{
         }
      }
 
-     static dynamic getHistoryList() async{
+     static Future<List> getHistoryList() async{
        String? searchList = await SharedPreferencesUtil.getString(Constant.SEARCH_LIST);
        if(searchList!=null){
          List searchListData = json.decode(searchList);

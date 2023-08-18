@@ -7,6 +7,7 @@ import 'package:jdshop/jdshop/config/config.dart';
 import 'package:jdshop/jdshop/model/BannerModel.dart';
 import 'package:jdshop/jdshop/model/RecomendModel.dart';
 import 'package:jdshop/jdshop/model/YouLikeModel.dart';
+import 'package:jdshop/jdshop/util/dio_proxy.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   List<BannerItem> bannerList = [];
   List<YouLikeItem> youlikeList = [];
   List<RecomendItem> recomendList = [];
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getHotRecomend() async {
-    var result = await Dio().get(Config.hotRecommend);
+    var result = await DioProxy().dio.get(Config.hotRecommend);
     print("api:${Config.hotRecommend}");
     print("result:${result}");
     var hotRecomend = RecomendModel.fromJson(result.data);
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getYouLike() async {
-    var result = await Dio().get(Config.youLike);
+    var result = await DioProxy().dio.get(Config.youLike);
     print("api:${Config.youLike}");
     print("返回数据:${result}");
     var youLikeModel = YouLikeModel.fromJson(result.data);
@@ -50,7 +51,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getBannerData() async {
-    var result = await Dio().get(Config.bannerData);
+    var result = await DioProxy().dio.get(Config.bannerData);
     print("api:${Config.bannerData}");
     print("返回结果:${result}");
     var bannerModel = BannerModel.fromJson(result.data);
@@ -179,7 +180,9 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                             onTap: () {
-                              ToastUtil.showMsg("688");
+                              Navigator.pushNamed(
+                                  context, "/product_detail_page",
+                                  arguments: {"id": youlikeList[index].id});
                             },
                           ));
                     }),
@@ -224,60 +227,66 @@ class _HomePageState extends State<HomePage> {
                     children: recomendList.map((item) {
                       var pic = Config.domain + "${item.pic}";
                       var picUrl = pic.replaceAll("\\", "/");
-                      return Container(
-                        width: (ScreenUtil().screenWidth - 40) / 2,
-                        height: 214,
-                        padding: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black12)),
-                        child: Column(
-                          children: [
-                            Container(
-                              width: (ScreenUtil().screenWidth - 40) / 2,
-                              height: 144,
-                              child: Image.network(
-                                picUrl,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Container(
-                              constraints: BoxConstraints(minHeight: 30),
-                              width: (ScreenUtil().screenWidth - 40) / 2,
-                              child: Text(
-                                "${item.title}",
-                                maxLines: 2,
-                                style: TextStyle(fontSize: 12),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Stack(
+                      return InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, "/product_detail_page",
+                                arguments: {"id": item.id});
+                          },
+                          child: Container(
+                            width: (ScreenUtil().screenWidth - 40) / 2,
+                            height: 214,
+                            padding: EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black12)),
+                            child: Column(
                               children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "￥${item.price}",
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.red),
+                                Container(
+                                  width: (ScreenUtil().screenWidth - 40) / 2,
+                                  height: 144,
+                                  child: Image.network(
+                                    picUrl,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                                Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(top: 5),
+                                Container(
+                                  constraints: BoxConstraints(minHeight: 30),
+                                  width: (ScreenUtil().screenWidth - 40) / 2,
+                                  child: Text(
+                                    "${item.title}",
+                                    maxLines: 2,
+                                    style: TextStyle(fontSize: 12),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "${item.oldPrice}",
+                                        "￥${item.price}",
                                         style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 12,
-                                            decoration:
-                                                TextDecoration.lineThrough),
+                                            fontSize: 14, color: Colors.red),
                                       ),
-                                    ))
+                                    ),
+                                    Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(top: 5),
+                                          child: Text(
+                                            "${item.oldPrice}",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 12,
+                                                decoration:
+                                                    TextDecoration.lineThrough),
+                                          ),
+                                        ))
+                                  ],
+                                )
                               ],
-                            )
-                          ],
-                        ),
-                      );
+                            ),
+                          ));
                     }).toList()))
           ],
         ),
@@ -286,4 +295,8 @@ class _HomePageState extends State<HomePage> {
       return Text("加载中...");
     }
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

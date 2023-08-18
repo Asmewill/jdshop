@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:jdshop/jdshop/Util/toast_util.dart';
+import 'package:jdshop/jdshop/util/dio_proxy.dart';
 import 'package:jdshop/jdshop/widget/loading_widget.dart';
 
 import 'news_detail_1.dart';
@@ -27,7 +28,7 @@ class _RefreshDemoState extends State<RefreshDemo> {
     });
     await Future.delayed(Duration(milliseconds: 500),() async{
       var apiUrl="http://www.phonegap100.com/appapi.php?a=getPortalList&catid=20&page=${page}";
-      var result= await Dio().get(apiUrl);
+      var result= await DioProxy().dio.get(apiUrl);
       print("返回结果:${result}");
       print("response data is Map:${result.data is Map}"); //false
       print("response data is String:${result.data is String}"); //true

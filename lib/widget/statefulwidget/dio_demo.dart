@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:jdshop/jdshop/util/dio_proxy.dart';
 import 'package:jdshop/widget/pages/dio_demo_page.dart';
 
 class DioDemo extends StatefulWidget {
@@ -36,7 +37,7 @@ class _DioDemoState extends State<DioDemo> {
   }
 
   void getData() async{
-    var response = await Dio().get("https://jd.itying.com/api/httpGet");
+    var response = await DioProxy().dio.get("https://jd.itying.com/api/httpGet");
     print(response.data);
     print(response.data is String);
     print(response.data is Map);
@@ -46,7 +47,7 @@ class _DioDemoState extends State<DioDemo> {
   }
 
   void postData() async{
-    var response = await Dio().post("https://jd.itying.com/api/httpPost",data: {"username":"张三","age":"20"});
+    var response = await DioProxy().dio.post("https://jd.itying.com/api/httpPost",data: {"username":"张三","age":"20"});
     print(response.data);
     print(response.data is String);
     print(response.data is Map);//默认是Map类型

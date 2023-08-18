@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jdshop/jdshop/util/dio_proxy.dart';
 
 class TakePhotoDemo extends StatefulWidget {
   const TakePhotoDemo({Key? key}) : super(key: key);
@@ -64,7 +65,7 @@ class _TakePhotoDemoState extends State<TakePhotoDemo> {
       "age":25,
       "file": MultipartFile.fromFile(imagePath,filename: "aaa.png")
     });
-    var response= Dio().post("https://jd.itying.com/imgupload",data:  formData);
+    var response= DioProxy().dio.post("https://jd.itying.com/imgupload",data:  formData);
     print(response);
   }
 

@@ -5,6 +5,7 @@ import 'package:jdshop/jdshop/Util/toast_util.dart';
 import 'package:jdshop/jdshop/config/config.dart';
 import 'package:jdshop/jdshop/model/LeftModel.dart';
 import 'package:jdshop/jdshop/model/RightModel.dart';
+import 'package:jdshop/jdshop/util/dio_proxy.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class CategoryPage extends StatefulWidget {
   State<CategoryPage> createState() => _CategoryPageState();
 }
 
-class _CategoryPageState extends State<CategoryPage> {
+class _CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClientMixin {
   int currentIndex = 0;
   List<LeftItem> leftList = [];
   List<RightItem> rightList = [];
@@ -23,11 +24,15 @@ class _CategoryPageState extends State<CategoryPage> {
     // TODO: implement initState
     super.initState();
     getLeftData();
-
   }
 
   void getLeftData() async {
-    var result = await Dio().get(Config.categoryLeft);
+    var result;
+    try {
+      result = await DioProxy().dio.get(Config.categoryLeft);
+    } catch (e) {
+      ToastUtil.showMsg("可能是网络或者服务器异常了~");
+    }
     print("api:${Config.categoryLeft}");
     print("result:${result}");
     var leftModel = LeftModel.fromJson(result.data);
@@ -38,7 +43,7 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   void getRightData(var pid) async {
-    var result = await Dio().get(Config.categoryRight + "${pid}");
+    var result = await DioProxy().dio.get(Config.categoryRight + "${pid}");
     print("api:${Config.categoryRight + pid}");
     print("result:${result}");
     var rightModel = RightModel.fromJson(result.data);
@@ -85,32 +90,29 @@ class _CategoryPageState extends State<CategoryPage> {
         child: ListView.builder(
             itemCount: leftList.length,
             itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        currentIndex = index;
-                        getRightData(leftList[index].id);
-                      });
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 50,
-                      color: currentIndex == index?Colors.black12:Colors.white,
-                      child: Text(
-                        "${leftList[index].title}",
-                        style: TextStyle(
-                            color: currentIndex == index
-                                ? Colors.red
-                                : Colors.black),
-                      ),
-                    ),
+              return InkWell(
+                onTap: () {
+                  setState(() {
+                    currentIndex = index;
+                    getRightData(leftList[index].id);
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color:
+                          currentIndex == index ? Colors.black12 : Colors.white,
+                      border: Border(
+                          bottom:
+                              BorderSide(color: Colors.black12, width: 0.5))),
+                  alignment: Alignment.center,
+                  height: 50,
+                  child: Text(
+                    "${leftList[index].title}",
+                    style: TextStyle(
+                        color:
+                            currentIndex == index ? Colors.red : Colors.black),
                   ),
-                  Divider(
-                    height: 1,
-                  )
-                ],
+                ),
               );
             }),
       );
@@ -144,23 +146,28 @@ class _CategoryPageState extends State<CategoryPage> {
                     itemBuilder: (context, index) {
                       var pic = (Config.domain + rightList[index].pic)
                           .replaceAll("\\", "/");
-                      return Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              child: AspectRatio(
-                                aspectRatio: 1.0,
-                                child: Image.network(
-                                  pic,
-                                  fit: BoxFit.cover,
+                      return InkWell(
+                        onTap: (){
+                          Navigator.pushNamed(context, "/product_list_page",arguments:{"cid":rightList[index].id});
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                child: AspectRatio(
+                                  aspectRatio: 1.0,
+                                  child: Image.network(
+                                    pic,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Text("${rightList[index].title}",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    overflow: TextOverflow.ellipsis))
-                          ],
+                              Text("${rightList[index].title}",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      overflow: TextOverflow.ellipsis))
+                            ],
+                          ),
                         ),
                       );
                     }),
@@ -175,4 +182,8 @@ class _CategoryPageState extends State<CategoryPage> {
       );
     }
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

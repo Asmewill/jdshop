@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:jdshop/jdshop/util/dio_proxy.dart';
 
 class NewsDetailPage2 extends StatefulWidget {
    var aid;
@@ -16,7 +17,7 @@ class _NewsDetailPage2State extends State<NewsDetailPage2> {
 
   void getData() async{
     var apiUrl = "http://www.phonegap100.com/appapi.php?a=getPortalArticle&aid=${widget.aid}";
-    var result = await Dio().get(apiUrl);
+    var result = await DioProxy().dio.get(apiUrl);
     print("result:${result}");
     setState(() {
          this.list = json.decode(result.data)["result"];

@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jdshop/jdshop/Util/toast_util.dart';
 import 'package:jdshop/jdshop/config/config.dart';
 import 'package:jdshop/jdshop/model/ProductModel.dart';
+import 'package:jdshop/jdshop/util/dio_proxy.dart';
 import 'package:jdshop/jdshop/widget/loading_widget.dart';
 
 class ProductListPage extends StatefulWidget {
@@ -38,13 +38,23 @@ class _ProductListPageState extends State<ProductListPage> {
   List<ProductItem> productList = [];
   var hasMore = true;
   var flag = true;
+  var showEmptyView = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  TextEditingController? editingController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     keyword = widget.arguments["keyword"];
+    cid=widget.arguments["cid"];
+    //设置初始值
+    if(keyword!=null){
+      editingController = TextEditingController();
+      editingController?.text = keyword;
+    }
+
+
     getProductListData();
     _scrollController.addListener(() {
       //_scrollController.position.pixels //获取滚动条滚动的高度
@@ -72,28 +82,34 @@ class _ProductListPageState extends State<ProductListPage> {
           "${Config.domain}api/plist?search=${this.keyword}&page=${this.page}&sort=${this.sort}&pageSize=${this.pageSize}";
     }
     print("api:${api}");
-    var result = await Dio().get(api);
+    var result = await DioProxy().dio.get(api);
     print("返回结果:${result}");
-    var productModel = ProductModel.fromJson(result.data);
-    if (productModel.result!.length < this.pageSize) {
+    var tempModel = ProductModel.fromJson(result.data);
+    if (tempModel.result!.length < this.pageSize) {
       setState(() {
-        this.productList.addAll(productModel.result!);
+        this.productList?.addAll(tempModel.result!);
         this.hasMore = false;
         this.flag = true;
+        if (this.page == 1 && productList.length == 0) {
+          showEmptyView = true;
+        }
       });
     } else {
       setState(() {
-        this.productList.addAll(productModel.result!);
+        this.productList?.addAll(tempModel.result!);
         this.page++;
         this.hasMore = true;
         this.flag = true;
+        if (this.page == 1 && productList.length == 0) {
+          showEmptyView = true;
+        }
       });
     }
   }
 
   void _filterListData(id) {
     if (id == 3) {
-       _scaffoldKey.currentState!.openEndDrawer();
+      _scaffoldKey.currentState!.openEndDrawer();
       setState(() {
         this.selectId = id;
       });
@@ -134,7 +150,11 @@ class _ProductListPageState extends State<ProductListPage> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20), color: Colors.black12),
           child: TextField(
+            controller: editingController,
             autofocus: false,
+            onChanged: (value){
+              this.keyword=value;
+            },
             decoration: InputDecoration(
                 hintText: "笔记本",
                 hintStyle: TextStyle(color: Colors.black26, fontSize: 16),
@@ -162,11 +182,9 @@ class _ProductListPageState extends State<ProductListPage> {
       body: Stack(
         children: [productListWidget(), filterWidget()],
       ),
-      endDrawer:MyDrawer(),
+      endDrawer: MyDrawer(),
     );
   }
-
-
 
   Widget filterWidget() {
     return Positioned(
@@ -228,14 +246,14 @@ class _ProductListPageState extends State<ProductListPage> {
         margin: EdgeInsets.only(top: 50),
         child: ListView.builder(
             controller: _scrollController,
-            itemCount: productList.length,
+            itemCount: productList?.length,
             itemBuilder: (context, index) {
-              var pic = (Config.domain + productList[index].pic!)
+              var pic = (Config.domain + productList![index].pic!)
                   .replaceAll("\\", "/");
               return InkWell(
-                onTap: (){
-                  ToastUtil.showMsg("AAA");
-                  Navigator.pushNamed(context, "product_detail_page",arguments: {"id":productList[index].id});
+                onTap: () {
+                  Navigator.pushNamed(context, "/product_detail_page",
+                      arguments: {"id": productList![index].id});
                 },
                 child: Column(
                   children: [
@@ -251,56 +269,59 @@ class _ProductListPageState extends State<ProductListPage> {
                             fit: BoxFit.cover,
                             errorBuilder: (BuildContext context, Object obj,
                                 StackTrace? stack) {
-                              return Image.asset("images/loading_fail.jpg",fit: BoxFit.cover,);
+                              return Image.asset(
+                                "images/loading_fail.jpg",
+                                fit: BoxFit.cover,
+                              );
                             },
                           ),
                         ),
                         Expanded(
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
                                   EdgeInsets.only(top: 10, left: 5, right: 10),
-                                  child: Text("${productList[index].title}"),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10, left: 5),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 22,
-                                        padding: EdgeInsets.only(left: 8, right: 8),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            color: Colors.black12,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(11))),
-                                        child: Text("8G"),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 10),
-                                        height: 22,
-                                        padding: EdgeInsets.only(left: 8, right: 8),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            color: Colors.black12,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(11))),
-                                        child: Text("16G"),
-                                      )
-                                    ],
+                              child: Text("${productList![index].title}"),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 10, left: 5),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 22,
+                                    padding: EdgeInsets.only(left: 8, right: 8),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(11))),
+                                    child: Text("8G"),
                                   ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 12, left: 5),
-                                  child: Text(
-                                    "￥${productList[index].price}",
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                )
-                              ],
-                            ))
+                                  Container(
+                                    margin: EdgeInsets.only(left: 10),
+                                    height: 22,
+                                    padding: EdgeInsets.only(left: 8, right: 8),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: Colors.black12,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(11))),
+                                    child: Text("16G"),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 12, left: 5),
+                              child: Text(
+                                "￥${productList![index].price}",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            )
+                          ],
+                        ))
                       ],
                     ),
                     Divider(
@@ -314,18 +335,24 @@ class _ProductListPageState extends State<ProductListPage> {
             }),
       );
     } else {
-      return LoadingWidget();
+      if (showEmptyView) {
+        return Center(
+          child: Text("暂无数据"),
+        );
+      } else {
+        return LoadingWidget();
+      }
     }
   }
 
   //显示加载中的圈圈
   Widget _showMore(index) {
     if (this.hasMore) {
-      return (index == this.productList.length - 1)
+      return (index == this.productList!.length - 1)
           ? LoadingWidget()
           : Text("");
     } else {
-      return (index == this.productList.length - 1)
+      return (index == this.productList!.length - 1)
           ? Container(
               child: Text("--  我是有底线的  --"),
               height: 50,
@@ -335,7 +362,6 @@ class _ProductListPageState extends State<ProductListPage> {
     }
   }
 }
-
 
 class MyDrawer extends StatelessWidget {
   @override
