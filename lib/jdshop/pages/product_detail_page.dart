@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jdshop/jdshop/model/ProductDetailModel.dart';
@@ -7,11 +6,9 @@ import 'package:jdshop/jdshop/pages/product_detail_second_page.dart';
 import 'package:jdshop/jdshop/pages/product_detail_thrid_page.dart';
 import 'package:jdshop/jdshop/util/dio_proxy.dart';
 import 'package:jdshop/jdshop/widget/loading_widget.dart';
-import 'package:jdshop/widget/dialog/loading_dialog.dart';
 
 import '../config/config.dart';
 import '../event/event_bus.dart';
-import '../util/dialog_util.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final dynamic arguments;
@@ -28,7 +25,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    // TODO: implement initStateB
     super.initState();
     id = widget.arguments["id"];
     _getProductDetail(id);

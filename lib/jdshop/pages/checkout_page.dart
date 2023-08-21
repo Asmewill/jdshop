@@ -97,7 +97,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       children: [
                                         Text(
                                             "${addressList[0]["name"]} ${" " + addressList[0]["phone"]}"),
-                                        Text("${addressList[0]["address"]}"),
+                                        Container(
+                                          width: ScreenUtil().screenWidth*3/4,
+                                          child:Text("${addressList[0]["address"]}"),
+                                        )
                                       ],
                                     )
                                   ],

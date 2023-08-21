@@ -251,7 +251,7 @@ class _MinePageState extends State<MinePage> {
                       "在线客服",
                       style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -260,6 +260,17 @@ class _MinePageState extends State<MinePage> {
             height: 0.2,
             color: Colors.black26,
           ),
+          isLogin?
+          Container(
+            margin: EdgeInsets.only(left: 10,right: 10,top: 30),
+            height: 46,
+            child:  ElevatedButton(onPressed: (){
+              UserUtil.loginOut();
+              ToastUtil.showMsg("退出登录成功");
+              getUserInfo();
+            }, child: Text("退出登录")) ,
+          ):Text("")
+
         ],
       ),
     ));

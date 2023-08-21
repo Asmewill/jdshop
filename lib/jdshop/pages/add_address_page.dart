@@ -8,6 +8,8 @@ import 'package:jdshop/jdshop/util/sign_util.dart';
 import 'package:jdshop/jdshop/util/user_util.dart';
 import 'package:jdshop/jdshop/widget/jd_textfield.dart';
 
+import '../citypicker/city_picker.dart';
+
 class AddAddressPage extends StatefulWidget {
   const AddAddressPage({Key? key}) : super(key: key);
 
@@ -50,7 +52,23 @@ class _AddAddressPageState extends State<AddAddressPage> {
             InkWell(
               onTap: () {
                 setState(() {
-                  address="湖北省孝感市云梦县";
+                  //address="湖北省孝感市云梦县";
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (ctx) {
+                      return CityPickerView(
+                        // params: datas,
+                        onResult: (res) {
+                          print(res.toJson());
+                          setState(() {
+                            address = res.toJson()["province"]+res.toJson()["city"]+res.toJson()["area"];
+                            print("address:"+address);
+                          });
+                        },
+                      );
+                    },
+                  );
                 });
               },
               child: Container(

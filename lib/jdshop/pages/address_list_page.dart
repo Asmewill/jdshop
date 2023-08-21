@@ -115,7 +115,10 @@ class _AddressListPageState extends State<AddressListPage> {
                                       child: Text(
                                           "${addressList[index]["name"]}${" " + addressList[index]["phone"]}"),
                                     ),
-                                    Text("${addressList[index]["address"]}")
+                                    Container(
+                                      width: ScreenUtil().screenWidth*15/20,
+                                      child:Text("${addressList[index]["address"]}",overflow: TextOverflow.ellipsis,maxLines:1)
+                                    )
                                   ],
                                 )
                               ],

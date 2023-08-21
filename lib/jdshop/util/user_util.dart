@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:jdshop/jdshop/config/constant.dart';
 import 'package:jdshop/jdshop/util/sharedpreferences_util.dart';
 
+import '../config/config.dart';
+
 class UserUtil {
   //登录信息
   static Future<List> getUserInfo() async {
@@ -23,5 +25,8 @@ class UserUtil {
     }else {
       return false;
     }
+  }
+  static loginOut(){
+    SharedPreferencesUtil.remove(Constant.USER_INFO);
   }
 }
