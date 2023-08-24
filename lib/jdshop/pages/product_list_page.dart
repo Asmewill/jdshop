@@ -87,7 +87,7 @@ class _ProductListPageState extends State<ProductListPage> {
     var tempModel = ProductModel.fromJson(result.data);
     if (tempModel.result!.length < this.pageSize) {
       setState(() {
-        this.productList?.addAll(tempModel.result!);
+        this.productList.addAll(tempModel.result!);
         this.hasMore = false;
         this.flag = true;
         if (this.page == 1 && productList.length == 0) {
@@ -96,7 +96,7 @@ class _ProductListPageState extends State<ProductListPage> {
       });
     } else {
       setState(() {
-        this.productList?.addAll(tempModel.result!);
+        this.productList.addAll(tempModel.result!);
         this.page++;
         this.hasMore = true;
         this.flag = true;
@@ -246,14 +246,14 @@ class _ProductListPageState extends State<ProductListPage> {
         margin: EdgeInsets.only(top: 50),
         child: ListView.builder(
             controller: _scrollController,
-            itemCount: productList?.length,
+            itemCount: productList.length,
             itemBuilder: (context, index) {
-              var pic = (Config.domain + productList![index].pic!)
+              var pic = (Config.domain + productList[index].pic!)
                   .replaceAll("\\", "/");
               return InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, "/product_detail_page",
-                      arguments: {"id": productList![index].id});
+                      arguments: {"id": productList[index].id});
                 },
                 child: Column(
                   children: [
@@ -283,7 +283,7 @@ class _ProductListPageState extends State<ProductListPage> {
                             Padding(
                               padding:
                                   EdgeInsets.only(top: 10, left: 5, right: 10),
-                              child: Text("${productList![index].title}"),
+                              child: Text("${productList[index].title}"),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 10, left: 5),
@@ -316,7 +316,7 @@ class _ProductListPageState extends State<ProductListPage> {
                             Container(
                               margin: EdgeInsets.only(top: 12, left: 5),
                               child: Text(
-                                "￥${productList![index].price}",
+                                "￥${productList[index].price}",
                                 style: TextStyle(color: Colors.red),
                               ),
                             )
@@ -348,11 +348,11 @@ class _ProductListPageState extends State<ProductListPage> {
   //显示加载中的圈圈
   Widget _showMore(index) {
     if (this.hasMore) {
-      return (index == this.productList!.length - 1)
+      return (index == this.productList.length - 1)
           ? LoadingWidget()
           : Text("");
     } else {
-      return (index == this.productList!.length - 1)
+      return (index == this.productList.length - 1)
           ? Container(
               child: Text("--  我是有底线的  --"),
               height: 50,

@@ -19,7 +19,7 @@ class DioProxy {
     //dio.options.contentType = "text";
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
       client.findProxy = (uri) {
-        return "PROXY 192.168.2.141:8888";//192.168.2.139为当前电脑的ip
+        return "PROXY 192.168.2.128:8888";//192.168.2.139为当前电脑的ip
       };
       client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
     };

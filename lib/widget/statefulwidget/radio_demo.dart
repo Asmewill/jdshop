@@ -29,7 +29,7 @@ class _RadioDemoState extends State<RadioDemo> {
                     groupValue: this.sex,
                     onChanged: (value) {
                       setState(() {
-                        this.sex = value!;
+                        this.sex = value as int;
                       });
                     }),
                 Text("女"),
@@ -38,7 +38,7 @@ class _RadioDemoState extends State<RadioDemo> {
                     groupValue: this.sex,
                     onChanged: (value) {
                       setState(() {
-                        this.sex = value!;
+                        this.sex = value as int;
                       });
                     })
               ],
@@ -52,7 +52,7 @@ class _RadioDemoState extends State<RadioDemo> {
               groupValue: this.sex,
               onChanged: (value) {
                 setState(() {
-                  this.sex = value!;
+                  this.sex = value as int;
                 });
               },
               title: Text("标题"),
@@ -65,7 +65,7 @@ class _RadioDemoState extends State<RadioDemo> {
               groupValue: this.sex,
               onChanged: (value) {
                 setState(() {
-                  this.sex = value!;
+                  this.sex = value as int;
                 });
               },
               title: Text("标题"),

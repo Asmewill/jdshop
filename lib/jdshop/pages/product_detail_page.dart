@@ -109,7 +109,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         children: [
           TabBarView(children: [
             ProductDetailFirstPage(productDetailModel: productDetailModel),
-            ProductDetailSecondPage(),
+            ProductDetailSecondPage(productDetailModel: productDetailModel),
             ProductDetailThridPage()
           ]),
           Positioned(

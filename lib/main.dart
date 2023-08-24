@@ -10,11 +10,10 @@ import 'jdshop/config/routes.dart';
 import 'jdshop/pages/index_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
-    return ScreenUtilInit(builder: (context,child){
+    return ScreenUtilInit(builder: (){
       return  MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (context)=>CountProvider()),

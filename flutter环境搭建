@@ -73,4 +73,8 @@ Dart语法基础  https://juejin.cn/post/7230699871249989691
 
 19.Flutter制作简单的遮罩层 https://juejin.cn/post/7031577191959920677
 
+20.导入flutter项目---需要通过 file ->open 打开flutter项目的根目录（含有pubspec.yaml文件的那个目录）
+
+21.你把这个 ^ 符号去掉 就是加载指定 的版本的 ， ^ 会在每次加载依赖时自动向上拉取最新版本
+
 

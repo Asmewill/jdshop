@@ -163,9 +163,10 @@ class _CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClie
                                 ),
                               ),
                               Text("${rightList[index].title}",
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontSize: 12,
-                                      overflow: TextOverflow.ellipsis))
+                                      ))
                             ],
                           ),
                         ),

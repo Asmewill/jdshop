@@ -54,8 +54,10 @@ class _DrawerViewState extends State<DrawerView> {
                       Padding(
                         padding: EdgeInsets.only(left: 30, top: 10),
                         child: Text(
+
                           "地址：深圳市宝安区海纳百川大厦B座7楼",
-                          style: TextStyle(fontSize: 14, color: Colors.white,overflow:TextOverflow.ellipsis),
+                          overflow:TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 14, color: Colors.white,),
                         ),
                       ),
                     ],

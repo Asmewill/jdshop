@@ -206,7 +206,7 @@ class _ProductDetailFirstPageState extends State<ProductDetailFirstPage> {
             ),
             InkWell(
               onTap: () {
-                if (widget.productDetailModel!.result?.attr?.length! != null) {
+                if (widget.productDetailModel!.result?.attr?.length != null) {
                   _showBottomView(widget.productDetailModel!.result!.attr!,widget.productDetailModel!.result!);
                 }
               },
