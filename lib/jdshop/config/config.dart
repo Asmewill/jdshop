@@ -1,7 +1,7 @@
 
 
 class Config {
-  static const domain="https://jdmall.itying.com/";
+  static const domain="https://miapp.itying.com/";
   //轮播图数据
   static const  bannerData=domain+"api/focus";
   //猜你喜欢

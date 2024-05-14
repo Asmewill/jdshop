@@ -52,7 +52,7 @@ class RightItem {
   String? id;
   String  pic="";
   String? pid;
-  String? sort;
+  Object? sort;
   Object? status;
   String? title;
 

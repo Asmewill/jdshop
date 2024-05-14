@@ -12,17 +12,22 @@ class DioProxy {
   static DioProxy? _instance=null;
   late Dio dio;
 
+   bool isOpenProxy=false;
+
   // 私有构造函数
   DioProxy._() {
     // 具体初始化代码
-    dio=  Dio();;
-    //dio.options.contentType = "text";
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
-      client.findProxy = (uri) {
-        return "PROXY 192.168.2.128:8888";//192.168.2.139为当前电脑的ip
+    dio=  Dio();
+    if(isOpenProxy){
+     //dio.options.contentType = "text";
+      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
+        client.findProxy = (uri) {
+          return "PROXY 192.168.2.136:8888";//192.168.2.139为当前电脑的ip
+        };
+        client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+
       };
-      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-    };
+    }
   }
 
   // 静态、同步、私有访问点

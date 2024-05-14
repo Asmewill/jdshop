@@ -54,7 +54,7 @@ class LeftItem {
   String? id;
   String? pic;
   String? pid;
-  String? sort;
+  Object? sort;
   Object? status;
   String? title;
 

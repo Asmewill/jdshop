@@ -81,11 +81,11 @@ class ProductDetailItem {
   Object? isBest;
   Object? isHot;
   Object? isNew;
-  String? oldPrice;
+  int? oldPrice;
   String? pic;
   Object? price;
   Object? salecount;
-  String? status;
+  Object? status;
   String? subTitle;
   String? title;
   //新增
